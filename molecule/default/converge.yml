@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include thorsteinbn.rport"
+      include_role:
+        name: "thorsteinbn.rport"

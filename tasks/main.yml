@@ -1,0 +1,8 @@
+---
+# tasks file for rport
+
+
+- name: "GUACAMOLE: INSTALL (APT)"
+  ansible.builtin.apt:
+    deb: "https://bitbucket.org/cloudradar/rport-guacamole/downloads/rport-guacamole_{{ rport_guacamole_version }}_{{ ansible_distribution }}_{{ ansible_distribution_release }}_{{ ansible_architecture }}.deb"
+    state: present

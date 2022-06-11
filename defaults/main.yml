@@ -1,0 +1,5 @@
+---
+# defaults file for rport
+rport_default_email: ""
+rport_guacamole_version: "1.4.0"
+rport_novnc_version: "1.3.0"

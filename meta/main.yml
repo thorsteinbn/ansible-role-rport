@@ -1,0 +1,31 @@
+galaxy_info:
+  author: Thorstein B. Nordby
+  namespace: thorsteinbn
+  description: Role to setup rport (rport.io) server
+
+  license: GPL-3.0
+
+  min_ansible_version: 2.10
+
+  platforms:
+    - name: Debian
+      versions:
+        - 10
+        - 11
+    - name: Ubuntu
+      versions:
+        - jammy
+        - impish
+        - hirsute
+        - groovy
+        - focal
+        - eoan
+        - disco
+        - cosmic
+        - bionic
+
+  galaxy_tags: []
+
+
+dependencies: []
+
