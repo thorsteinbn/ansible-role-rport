@@ -1,6 +1,7 @@
 galaxy_info:
   author: Thorstein B. Nordby
   namespace: thorsteinbn
+  role_name: rport
   description: Role to setup rport (rport.io) server
 
   license: GPL-3.0
@@ -10,8 +11,8 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - 10
-        - 11
+        - bullseye
+        - buster
     - name: Ubuntu
       versions:
         - jammy

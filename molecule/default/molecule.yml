@@ -2,9 +2,16 @@
 dependency:
   name: galaxy
 driver:
-  name: delegated
+  name: podman
 platforms:
-  - name: instance
+  - name: debian_bullseye
+    image: docker.io/geerlingguy/docker-debian11-ansible
+    pre_build_image: true
+    command: /lib/systemd/systemd
+  - name: debian_buster
+    image: docker.io/geerlingguy/docker-debian10-ansible
+    pre_build_image: true
+    command: /lib/systemd/systemd
 provisioner:
   name: ansible
 verifier:

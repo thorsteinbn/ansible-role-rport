@@ -1,8 +1,40 @@
 ---
-# tasks file for rport
+- name: "CLOUDFLARE: Verify that FQDN is publicly resolvable"
+  ansible.builtin.uri:
+    url: "https://cloudflare-dns.com/dns-query?name={{ rport_fqdn }}"
+    method: GET
+    return_content: yes
+    status_code: 200
+    body_format: json
+    headers:
+      accept: application/dns-json
+  register: cloudflare_dns_output
 
-
-- name: "GUACAMOLE: INSTALL (APT)"
+- name: "SYSTEM: Install prereq packages"
   ansible.builtin.apt:
-    deb: "https://bitbucket.org/cloudradar/rport-guacamole/downloads/rport-guacamole_{{ rport_guacamole_version }}_{{ ansible_distribution }}_{{ ansible_distribution_release }}_{{ ansible_architecture }}.deb"
+    name: "{{ rport_prereq }}"
     state: present
+    update_cache: true
+
+- name: "SYSTEM: Add rport user"
+  ansible.builtin.user:
+    name: rport
+    comment: rport user
+    home: /var/lib/rport
+    shell: /bin/false
+
+- name: "GUACAMOLE: Install"
+  ansible.builtin.apt:
+    deb: "https://bitbucket.org/cloudradar/rport-guacamole/downloads/rport-guacamole_{{ rport_guacamole_version }}_{{ ansible_distribution|lower }}_{{ ansible_distribution_release|lower }}_{{ ansible_architecture }}.deb"
+    state: present
+
+- name: "noVNC: Download"
+  ansible.builtin.unarchive:
+    src: "https://github.com/novnc/noVNC/archive/refs/tags/v{{ rport_novnc_version }}.zip"
+    dest: /var/lib/rport/
+    creates: /var/lib/rport/noVNC-{{ rport_novnc_version }}
+    owner: rport
+    group: rport
+    remote_src: yes
+
+...

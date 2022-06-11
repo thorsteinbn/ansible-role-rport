@@ -1,6 +1,8 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    rport_fqdn: "callisto.vearlia.org"
   tasks:
     - name: "Include thorsteinbn.rport"
       include_role:
