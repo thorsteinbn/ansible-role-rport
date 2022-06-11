@@ -1,4 +1,5 @@
 ---
+# Note to self, is this step really needed?
 - name: "CLOUDFLARE: Verify that FQDN is publicly resolvable"
   ansible.builtin.uri:
     url: "https://cloudflare-dns.com/dns-query?name={{ rport_fqdn }}"
@@ -38,4 +39,46 @@
     group: rport
     remote_src: yes
 
+- name: "RPORT: Install"
+  block:
+    - name: "RPORT: Download"
+      ansible.builtin.get_url:
+        url: "https://download.rport.io/rportd/{{ rport_release }}/latest.php?arch={{ ansible_architecture }}"
+        dest: /tmp/rportd.tar.gz
+
+    - name: "RPORT: install bin"
+      ansible.builtin.unarchive:
+        src: /tmp/rportd.tar.gz
+        dest: /usr/local/bin/
+        include: rportd
+        creates: /usr/local/bin/rportd
+        remote_src: true
+
+    - name: "RPORT: Ensure /etc/rport/ exists"
+      ansible.builtin.file:
+        path: /etc/rport
+        state: directory
+        owner: rport
+        group: rport
+
+    - name: "RPORT: Ensure /var/log/rport/ exists"
+      ansible.builtin.file:
+        path: /var/log/rport
+        state: directory
+        owner: rport
+        group: rport
+
+    # Note: This should perhaps be removed
+    - name: "RPORT: Install example config"
+      ansible.builtin.unarchive:
+        src: /tmp/rportd.tar.gz
+        dest: /etc/rport/
+        include: rportd.example.conf   
+        creates: /etc/rport/rportd.example.conf
+        remote_src: true
+
+    - name: "RPORT: Install config from template"
+      ansible.builtin.template:
+        src: rportd.conf.j2
+        dest: /etc/rport/rportd.conf
 ...

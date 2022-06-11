@@ -2,3 +2,8 @@
 # vars file for rport
 rport_prereq:
   - unzip
+  - pwgen 
+  - apache2-utils
+  - curl
+  - sqlite3
+  - netcat
