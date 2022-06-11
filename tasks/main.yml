@@ -9,6 +9,7 @@
     headers:
       accept: application/dns-json
   register: cloudflare_dns_output
+  failed_when: cloudflare_dns_output.json.Status != 0
 
 - name: "SYSTEM: Install prereq packages"
   ansible.builtin.apt:
