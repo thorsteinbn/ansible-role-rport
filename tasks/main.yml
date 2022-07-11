@@ -1,5 +1,6 @@
 ---
-# Note to self, is this step really needed?
+# We will not fail on non resolvable FQDN; however, we'll use this to see if letsencrypt can be setup or not.
+# letsencrypt should also be able to be turned off via input
 - name: "CLOUDFLARE: Verify that FQDN is publicly resolvable"
   ansible.builtin.uri:
     url: "https://cloudflare-dns.com/dns-query?name={{ rport_fqdn }}"
@@ -10,7 +11,6 @@
     headers:
       accept: application/dns-json
   register: cloudflare_dns_output
-  failed_when: cloudflare_dns_output.json.Status != 0
 
 - name: "SYSTEM: Install prereq packages"
   ansible.builtin.apt:
@@ -37,7 +37,7 @@
     creates: /var/lib/rport/noVNC-{{ rport_novnc_version }}
     owner: rport
     group: rport
-    remote_src: yes
+    remote_src: true
 
 - name: "RPORT: Install"
   block:
@@ -81,4 +81,19 @@
       ansible.builtin.template:
         src: rportd.conf.j2
         dest: /etc/rport/rportd.conf
+
+- name: "TLS: Include letsencrypt stages"
+  ansible.builtin.include_tasks:
+    file: letsencrypt.yml
+  when:
+    - cloudflare_dns_output.json.Status == 0
+    - rport_enable_tls
+    - rport_force_selfsigned == false
+
+- name: "TLS: Include letsencrypt stages"
+  ansible.builtin.include_tasks:
+    file: selfsigned.yml
+  when:
+    - cloudflare_dns_output.json.Status != 0 or rport_force_selfsigned
+    - rport_enable_tls
 ...

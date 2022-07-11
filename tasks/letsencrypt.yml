@@ -1,0 +1,7 @@
+---
+- name: "LETSENCRYPT: Ensure we have certbot"
+  ansible.builtin.apt:
+    name: certbot
+    state: present
+
+...

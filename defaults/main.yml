@@ -5,3 +5,5 @@ rport_guacamole_version: "1.4.0"
 rport_novnc_version: "1.3.0"
 rport_fqdn: ""
 rport_release: "stable"
+rport_enable_tls: true
+rport_force_selfsigned: false
