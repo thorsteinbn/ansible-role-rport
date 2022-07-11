@@ -1,0 +1,10 @@
+---
+- name: "SELFSIGNED: Ensure we have temp ca folder"
+  
+...
+
+
+
+
+
+/etc/rport/ssl/ca/export
